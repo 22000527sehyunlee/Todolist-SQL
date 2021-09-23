@@ -12,8 +12,7 @@ public class TodoUtil {
 	
 	public static void createItem(TodoList list) {
 		
-		String title, desc, date;
-		Date current_date;
+		String title, desc;
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("[항목추가]\n"
@@ -28,12 +27,8 @@ public class TodoUtil {
 		sc.nextLine();
 		System.out.println("내용 > ");
 		desc = sc.nextLine().trim();
-		
-		current_date = new Date();
-		SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		date =dateToString.format(current_date);
   
-		TodoItem t = new TodoItem(title, desc, date);
+		TodoItem t = new TodoItem(title, desc);
 		list.addItem(t);
 		System.out.println("추가되었습니다.");
 	}
@@ -75,7 +70,6 @@ public class TodoUtil {
 			System.out.println("제목이 중복됩니다.");
 			return;
 		}
-		String new_date = sc.next().trim();
 		
 		sc.nextLine();
 		System.out.println("새로운 내용을 입력하세요 > ");
@@ -83,7 +77,7 @@ public class TodoUtil {
 		for (TodoItem item : l.getList()) {
 			if (item.getTitle().equals(title)) {
 				l.deleteItem(item);
-				TodoItem t = new TodoItem(new_title, new_description, new_date);
+				TodoItem t = new TodoItem(new_title, new_description);
 				l.addItem(t);
 				System.out.println("수정되었습니다~");
 			}
@@ -132,7 +126,7 @@ public class TodoUtil {
 				title = st.nextToken();
 				desc = st.nextToken();
 				date = st.nextToken();
-					TodoItem a = new TodoItem(title,desc,date);
+					TodoItem a = new TodoItem(title,desc);
 					l.addItem(a);
 					System.out.println(a+"\n");
 				}

@@ -9,17 +9,14 @@ public class TodoItem {
     private String current_date;
 
 
-    public TodoItem(String title, String desc, String date){
+    public TodoItem(String title, String desc){
         this.title=title;
         this.desc=desc;
-        this.current_date=date ;
-//        SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//        String to =dateToString.format(current_date);
+        Date date = new Date();
+        SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        current_date =dateToString.format(date);
     }
     
-//    public TodoItem(String title2, String desc2, String date) {
-//		// TODO Auto-generated constructor stub
-//	}
 
 	public String getTitle() {
         return title;
@@ -38,14 +35,12 @@ public class TodoItem {
     }
 
     public String getCurrent_date() {
-        SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String to =dateToString.format(current_date);
-        return to;
+        
+        return current_date;
     }
     
     public String toSaveString() {
-//    	SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//        String to =dateToString.format(current_date);
+    	
         return title + "##" + desc + "##"+ current_date +"\n" ;
     }
 
@@ -53,6 +48,6 @@ public class TodoItem {
     public void setCurrent_date(String current_date) {
     	SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String to =dateToString.format(current_date);
-        this.current_date = current_date;
+        this.current_date = to;
     }
 }

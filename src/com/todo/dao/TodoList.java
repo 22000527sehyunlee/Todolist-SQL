@@ -36,8 +36,10 @@ public class TodoList {
 
 	public void listAll() {
 		System.out.println("[전체목록]");
+		int count =1;
 		for (TodoItem myitem : list) {
-			System.out.println("["+myitem.getTitle() +"]: "+ myitem.getDesc()+"-"+myitem.getCurrent_date());
+			System.out.println(count +". ["+ myitem.category()+"] : "+ myitem.getTitle()+"Duedate: "+myitem.due_date()+" - "+ myitem.getDesc()+"-"+myitem.getCurrent_date());
+			count++;
 		}
 	}
 	

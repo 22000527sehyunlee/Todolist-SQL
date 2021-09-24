@@ -7,19 +7,29 @@ public class TodoItem {
     private String title;
     private String desc;
     private String current_date;
+    private String due_date;
+    private String category;
 
 
     public TodoItem(String title, String desc){
         this.title=title;
         this.desc=desc;
-        Date date = new Date();
-        SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        current_date =dateToString.format(date);
+        SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
+        this.current_date =dateToString.format(new Date());
+        this.category = category;
+        this.due_date = due_date;        
     }
     
-
 	public String getTitle() {
         return title;
+    }
+	public String category() {
+        return category;
+    }
+	public String due_date() {
+		SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd");
+        this.due_date =dateToString.format(due_date());
+        return due_date;
     }
 
     public void setTitle(String title) {
@@ -40,14 +50,13 @@ public class TodoItem {
     }
     
     public String toSaveString() {
-    	
-        return title + "##" + desc + "##"+ current_date +"\n" ;
+    	//나중에 카테고리나 인셉션 추가되면서 바뀌게될거다.
+        return title + "##" + desc + "##"+ due_date +"##"+ current_date +"\n" ;
     }
 
 
     public void setCurrent_date(String current_date) {
-    	SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String to =dateToString.format(current_date);
-        this.current_date = to;
+    	SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
+        this.current_date =dateToString.format(new Date());
     }
 }

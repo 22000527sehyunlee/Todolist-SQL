@@ -12,13 +12,14 @@ public class TodoUtil {
 	
 	public static void createItem(TodoList list) {
 		
-		String title, desc;
+		String title, desc, category;
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("[항목추가]\n"
-				+ "제목 > ");
+				+ "카테고리 > ");
 		
-		title = sc.next();
+		category = sc.next();// 위에서 입력한 엔터를 제거하기 위한 코드
+		title = sc.next();// 위에서 입력한 엔터를 제거하기 위한 코드
 		if (list.isDuplicate(title)) {
 			System.out.printf("제목이 중복됩니다.");
 			return;
@@ -86,7 +87,7 @@ public class TodoUtil {
 	}
 
 	public static void listAll(TodoList l) throws IOException {
-		System.out.println("[전체목록]");
+		System.out.println("[전체목록, 총 "+ l.getList().size()+"개]");
 		for (TodoItem myitem : l.getList()) {
 			System.out.println("["+myitem.getTitle() +"]: "+ myitem.getDesc()+" - "+myitem.getCurrent_date());
 		}
@@ -94,7 +95,7 @@ public class TodoUtil {
 	
 	public static void saveList(TodoList l, String filename) {
 		try {
-			FileWriter saveList = new FileWriter("C:\\Users\\leesj\\git\\TodoListApp\\src\\todolist.txt");
+			FileWriter saveList = new FileWriter("todolist.txt");
 			
 			for (TodoItem myitem : l.getList()) {
 				String a = myitem.toSaveString();
@@ -116,21 +117,25 @@ public class TodoUtil {
 		String title, desc, date ;
 		
 		try {
+			//파일은 BufferedReader로 읽기 위한 장치
 			FileReader readlistfr = new FileReader(filename);
 			BufferedReader readlistBr = new BufferedReader(readlistfr);
 			String str = null;
+			int count=0;
 			
-			 while ((str = readlistBr.readLine()) != null) {
+			 while ((str = readlistBr.readLine()) != null) { //한줄씩 읽는 코드
 				 if(str.indexOf("##") == -1) break;
 				st = new StringTokenizer(str,"##");
 				title = st.nextToken();
 				desc = st.nextToken();
 				date = st.nextToken();
 					TodoItem a = new TodoItem(title,desc);
+					a.setCurrent_date(date);
 					l.addItem(a);
-					System.out.println(a+"\n");
+					count ++;					
 				}
-			 
+			 readlistBr.close();
+			 System.out.println(count+"개의 항목을 읽었습니다.");
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

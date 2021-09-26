@@ -31,18 +31,16 @@ public class TodoList {
 
 	public void sortByName() {
 		Collections.sort(list, new TodoSortByName());
-
 	}
 
 	public void listAll() {
 		System.out.println("[전체목록]");
-		int count =1;
+		int i=1;
 		for (TodoItem myitem : list) {
-			System.out.println(count +". ["+ myitem.category()+"] : "+ myitem.getTitle()+"Duedate: "+myitem.due_date()+" - "+ myitem.getDesc()+"-"+myitem.getCurrent_date());
-			count++;
+			System.out.println(i+". ["+ myitem.getCategory()+"] : "+ myitem.getTitle()+"Duedate: "+myitem.getDue_date()+" - "+ myitem.getDesc()+"-"+myitem.getCurrent_date());			
+		i++;
 		}
-	}
-	
+	}	
 	public void reverseList() {
 		Collections.reverse(list);
 	}
@@ -55,9 +53,9 @@ public class TodoList {
 		return list.indexOf(t);
 	}
 
-	public Boolean isDuplicate(String title) {
+	public Boolean isDuplicate(String new_title) {
 		for (TodoItem item : list) {
-			if (title.equals(item.getTitle())) return true;
+			if (new_title == (item.getTitle())) return true;
 		}
 		return false;
 	}

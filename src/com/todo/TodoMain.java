@@ -1,7 +1,10 @@
 package com.todo;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import com.todo.dao.TodoList;
 import com.todo.menu.Menu;
@@ -55,10 +58,27 @@ public class TodoMain {
 				isList = true;
 				break;
 				
-			case "ls_date":
+			case "ls_date_asc":
 				l.sortByDate();
 				System.out.println("날짜순으로 정렬하였습니다.");
 				isList = true;
+				break;
+			case "ls_date_desc":
+				l.sortByDate();
+				l.reverseList();
+				System.out.println("날짜역순으로 정렬하였습니다.");
+				isList = true;
+				break;
+				
+			case "find":
+				TodoUtil.find(l);
+				
+				System.out.println("입력한 단어가 포함된 항목을 출력 했습니다.");
+				break;
+			case "find_cate":
+				TodoUtil.findcate(l);
+				
+				System.out.println("입력한 단어가 포함된 항목을 출력 했습니다.");
 				break;
 				
 			case "help":

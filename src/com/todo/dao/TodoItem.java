@@ -11,30 +11,34 @@ public class TodoItem {
     private String category;
 
 
-    public TodoItem(String title, String desc){
+    public TodoItem(String category ,String title , String desc, String due_date, String date){
         this.title=title;
         this.desc=desc;
         SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
         this.current_date =dateToString.format(new Date());
         this.category = category;
-        this.due_date = due_date;        
+        this.due_date = due_date;
+       
     }
     
 	public String getTitle() {
         return title;
     }
-	public String category() {
-        return category;
-    }
-	public String due_date() {
-		SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd");
-        this.due_date =dateToString.format(due_date());
-        return due_date;
-    }
-
-    public void setTitle(String title) {
+	public void setTitle(String title) {
         this.title = title;
     }
+	public String getCategory() {
+        return category;
+    }
+	public void setCategory(String category) {
+        this.category = category;
+    }
+	public String getDue_date() {
+        return due_date;
+    }
+	public void setDue_date() {
+		this.due_date = due_date;    
+	}
 
     public String getDesc() {
         return desc;
@@ -51,12 +55,11 @@ public class TodoItem {
     
     public String toSaveString() {
     	//나중에 카테고리나 인셉션 추가되면서 바뀌게될거다.
-        return title + "##" + desc + "##"+ due_date +"##"+ current_date +"\n" ;
+        return category+"##"+ title + "##" + desc + "##"+ due_date +"##"+ current_date +"\n" ;
     }
 
-
     public void setCurrent_date(String current_date) {
-    	SimpleDateFormat dateToString = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
-        this.current_date =dateToString.format(new Date());
+    	
+        this.current_date =current_date;
     }
 }

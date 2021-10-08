@@ -16,6 +16,8 @@ public class TodoMain {
 	
 		Scanner sc = new Scanner(System.in);
 		TodoList l = new TodoList();
+		l.importData("todolist.txt");
+		
 		boolean isList = false;
 		boolean quit = false;
 		

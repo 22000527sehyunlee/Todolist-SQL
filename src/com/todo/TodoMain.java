@@ -16,7 +16,7 @@ public class TodoMain {
 	
 		Scanner sc = new Scanner(System.in);
 		TodoList l = new TodoList();
-		l.importData("todolist.txt");
+		//l.importData("todolist.txt");
 		
 		boolean isList = false;
 		boolean quit = false;
@@ -24,7 +24,6 @@ public class TodoMain {
 		
 		
 		Menu.displaymenu();
-		TodoUtil.loadList(l, "todolist.txt");
 		do {
 			Menu.prompt();
 			isList = false;
@@ -42,45 +41,40 @@ public class TodoMain {
 			case "edit":
 				TodoUtil.updateItem(l);
 				break;
-				
-			case "ls":
-				TodoUtil.listAll(l);
+			case "ls" :
+				TodoUtil.listAll(l, "current_date", 1);
 				break;
 
 			case "ls_name_asc":
-				l.sortByName();
 				System.out.println("제목순으로 정렬하였습니다.");
-				isList = true;
+				TodoUtil.listAll(l, "title", 1);
 				break;
-
+				
 			case "ls_name_desc":
-				l.sortByName();
-				l.reverseList();
 				System.out.println("제목역순으로 정렬하였습니다.");
-				isList = true;
+				TodoUtil.listAll(l, "title", 0);
 				break;
 				
 			case "ls_date_asc":
-				l.sortByDate();
 				System.out.println("날짜순으로 정렬하였습니다.");
-				isList = true;
+				TodoUtil.listAll(l,"due_date",1);
 				break;
 			case "ls_date_desc":
-				l.sortByDate();
-				l.reverseList();
 				System.out.println("날짜역순으로 정렬하였습니다.");
-				isList = true;
+				TodoUtil.listAll(l,"due_date",0);
+				break;
+			case "ls_cate":
+				TodoUtil.listCateAll(l);
 				break;
 				
 			case "find":
-				TodoUtil.find(l);
-				
-				System.out.println("입력한 단어가 포함된 항목을 출력 했습니다.");
+				String keyword = sc.nextLine().trim();
+				TodoUtil.findlist(l,keyword);				
 				break;
-			case "find_cate":
-				TodoUtil.findcate(l);
 				
-				System.out.println("입력한 단어가 포함된 항목을 출력 했습니다.");
+			case "find_cate":
+				String cate = sc.nextLine().trim();
+				TodoUtil.findCateList(l,cate);
 				break;
 				
 			case "help":
@@ -97,7 +91,7 @@ public class TodoMain {
 				break;
 			}
 			
-			if(isList) l.listAll();
+			if(isList) TodoUtil.listAll(l, "current_date", 1);
 		} while (!quit);
 	}
 }

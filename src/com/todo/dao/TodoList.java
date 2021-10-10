@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 import com.todo.service.DbConnection;
@@ -32,9 +35,104 @@ public class TodoList {
 		list.remove(index);
 		list.add(updated);
 	}
+	public int getCount() {
+		int count =0;
+		count++;
+		return count;
+	}
 
-	public ArrayList<TodoItem> getList() {
-		return new ArrayList<TodoItem>(list);
+	public ArrayList<TodoItem> getList(String keyword) {
+		ArrayList<TodoItem> list = new ArrayList<TodoItem>();
+		PreparedStatement pstmt;
+		keyword = "%"+keyword +"%";
+		try {
+			String sql = "SELECT *FROM list WHERE title like ? or memo like ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,keyword);
+			pstmt.setString(2,keyword);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String cate = rs.getString("category");
+				String title =rs.getString("title");
+				String desc =rs.getString("memo");
+				String current_date =rs.getString("current_date");
+				String due_date =rs.getString("due_date");
+				System.out.println(id+" "+cate+" "+title+" "+desc+" "+due_date+" "+current_date);
+				
+			}
+			
+			rs.close();
+			pstmt.close();
+			conn.close();
+
+			
+		}catch (SQLException e) {
+			System.out.println("DB연결에 실패하거나 SQL문이 틀렸습니다.");
+			System.out.print("사유: " + e.getMessage());
+		}
+		return list;
+	}
+	public ArrayList<String> getCategories(){
+		ArrayList<String> list = new ArrayList<String>();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			String sql = "SELECT DISTINCT category FROM list";
+			ResultSet re = stmt.executeQuery(sql);
+			
+			while(re.next()) {
+				int id = re.getInt("id");
+				String cate = re.getString("category");
+				String title =re.getString("title");
+				String desc =re.getString("memo");
+				String current_date =re.getString("current_date");
+				String due_date =re.getString("due_date");
+				System.out.println(id+" "+cate+" "+title+" "+desc+" "+due_date+" "+current_date);
+				
+			}
+			
+			re.close();
+			stmt.close();
+			conn.close();
+			
+			
+		}catch (SQLException e) {
+			System.out.println("DB연결에 실패하거나 SQL문이 틀렸습니다.");
+			System.out.print("사유: " + e.getMessage());
+		}
+		return list;
+		}
+	public ArrayList<TodoItem> getListCategory (String keyword){
+		ArrayList<TodoItem> list =new ArrayList<TodoItem>();
+		PreparedStatement pstmt;
+		try {
+			String sql = "SELECT * FROM list WHERE category = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			ResultSet re = pstmt.executeQuery();
+			
+			while(re.next()) {
+				int id = re.getInt("id");
+				String cate = re.getString("category");
+				String title =re.getString("title");
+				String desc =re.getString("memo");
+				String current_date =re.getString("current_date");
+				String due_date =re.getString("due_date");
+				System.out.println(id+" "+cate+" "+title+" "+desc+" "+due_date+" "+current_date);
+				
+			}
+			
+			re.close();
+			pstmt.close();
+			conn.close();
+			
+		}catch (SQLException e) {
+			System.out.println("DB연결에 실패하거나 SQL문이 틀렸습니다.");
+			System.out.print("사유: " + e.getMessage());
+		}
+		return list;
 	}
 
 	public void sortByName() {
@@ -69,7 +167,7 @@ public class TodoList {
 	}
 	public void importData(String filename) {
 		try {
-			BufferedReader br = new BufferedReader (new FileReader (filename));
+			BufferedReader br = new BufferedReader (new FileReader ("todolist.txt"));
 			String line;
 			String sql = "insert into list (title, memo, category, current_date, due_date)"
 						+"values (?,?,?,?,?);";
@@ -99,4 +197,37 @@ public class TodoList {
 		}
 	}
 
+	public ArrayList<TodoItem> getOrderedList(String orderby,int ordering) {
+		ArrayList<TodoItem> list = new ArrayList<TodoItem>();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			String sql = "SELECT * FROM list ORDER BY "+ orderby;
+			if(ordering ==0) 
+				sql += "desc";
+				ResultSet re = stmt.executeQuery(sql);
+				
+				while(re.next()) {
+					int id = re.getInt("id");
+					String cate = re.getString("category");
+					String title =re.getString("title");
+					String desc =re.getString("memo");
+					String current_date =re.getString("current_date");
+					String due_date =re.getString("due_date");
+					System.out.println(id+" "+cate+" "+title+" "+desc+" "+due_date+" "+current_date);
+					
+				}
+				
+				re.close();
+				stmt.close();
+				conn.close();
+				
+			}catch (SQLException e) {
+				System.out.println("DB연결에 실패하거나 SQL문이 틀렸습니다.");
+				System.out.print("사유: " + e.getMessage());
+			}
+		return list;
+			
+		
+	}
 }

@@ -48,8 +48,9 @@ public class TodoUtil {
 				"삭제할 항목의 번호을 입력하세요 > ");
 		int num =  sc.nextInt();
 		int i=1;
+		String keyword = null;
 		
-		for (TodoItem item : l.getList()) {
+		for (TodoItem item : l.getList(keyword)) {
 			if (l.indexOf(item) == num-1) {
 				System.out.println(i+ ". ["+item.getCategory()+ "]: "+item.getTitle()+" - "+ item.getDesc()+" - "+item.getDue_date()+" - "+item.getCurrent_date());
 				System.out.print("위 항목을 삭제하시겠습니끼? (y/n) ");
@@ -59,11 +60,8 @@ public class TodoUtil {
 				System.out.println("삭제되었습니다.");
 				break;
 				}
-				
-				
 			}
-		}
-			
+		}	
 	}
 
 	public static void updateItem(TodoList l) {
@@ -74,8 +72,9 @@ public class TodoUtil {
 				+ "수정할 항목의 번호을 입력하세요 > ");
 		int num = sc.nextInt();
 		int i=1;
+		String keyword = null;
 		
-		for (TodoItem item : l.getList()) 
+		for (TodoItem item : l.getList(keyword)) 
 			i++;
 		
 		if (num > i) {
@@ -98,7 +97,8 @@ public class TodoUtil {
 		System.out.println("새로운 마감일을 입력하세요 (yyyy/mm/dd) > ");
 		String new_duedate = sc.nextLine().trim();
 		
-		for (TodoItem item : l.getList()) {
+		
+		for (TodoItem item : l.getList(keyword)) {
 			if (l.indexOf(item) == num-1) {
 				l.deleteItem(item);
 				TodoItem t = new TodoItem(new_category,new_title, new_description,new_duedate, null);
@@ -116,8 +116,8 @@ public class TodoUtil {
 		System.out.println("키워드를 입력하세요");
 		String word = sc.nextLine().trim();
 		int i=1;
-		
-		for (TodoItem myitem : l.getList()) {
+		String keyword = null;
+		for (TodoItem myitem : l.getList(keyword)) {
 			String a = myitem.toSaveString();
 			if ((a.indexOf(word) >=0)) {
 				System.out.println(i+ ". ["+myitem.getCategory()+ "]: "+myitem.getTitle()+" - "+ myitem.getDesc()+" - "+myitem.getDue_date()+" - "+myitem.getCurrent_date());
@@ -125,13 +125,22 @@ public class TodoUtil {
 			}
 		}
 	}
+	public static void findlist(TodoList l, String keyword) {
+		int count =0;
+		for(TodoItem item : l.getList(keyword)) {
+			System.out.println(item.toString());
+			count++;
+		}
+		System.out.printf("총 %d개의 항목을 찾았습니다. \n", count);
+	}
 	public static void findcate(TodoList l) throws IOException { 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("키워드를 입력하세요");
 		String word = sc.nextLine().trim();
 		int i=1;
+		String keyword = null; 
 		
-		for (TodoItem myitem : l.getList()) {
+		for (TodoItem myitem : l.getList(keyword)) {
 			String a = myitem.toSaveString();
 			if ((a.indexOf(word) >=0)&&(a.indexOf(word) <=myitem.getCategory().length())) {
 				System.out.println(i+ ". ["+myitem.getCategory()+ "]: "+myitem.getTitle()+" - "+ myitem.getDesc()+" - "+myitem.getDue_date()+" - "+myitem.getCurrent_date());
@@ -140,21 +149,35 @@ public class TodoUtil {
 		}
 	}
 
-	public static void listAll(TodoList l) throws IOException {
-		System.out.println("[전체목록, 총 "+ l.getList().size()+"개]");
-		int i=1;
-		for (TodoItem myitem : l.getList()) {
-			System.out.println(i+ ". ["+myitem.getCategory()+ "]: "+myitem.getTitle()+" - "+ myitem.getDesc()+" - "+myitem.getDue_date()+" - "+myitem.getCurrent_date());
-			i++;
-			continue;
+	public static void listAll(TodoList l,String orderby,int oedering) {
+		System.out.printf("[전체목록, 총 %d개]\n",l.getCount());
+		for (TodoItem item : l.getOrderedList(orderby, oedering)) {
+			System.out.println(item.toString());
+	  }
+	}
+	public static void listCateAll(TodoList l) {
+		int count =0;
+		for (String item : l.getCategories()){
+			System.out.print(item + " ");
+			count++;
 		}
+		System.out.printf("\n총 %d개의 카테고리가 등록되어 있습니다.\n",count);
+	}
+	public static void findCateList(TodoList l,String cate) {
+		int count=0;
+		for(TodoItem item : l.getListCategory(cate)) {
+			System.out.println(item.toString());
+			count++;
+		}
+		System.out.printf("\n총 %d개의 항목을 찾았습니다.\n",count);
 	}
 	
 	public static void saveList(TodoList l, String filename) {
+		String keyword = null; 
 		try {
 			FileWriter saveList = new FileWriter("todolist.txt");
 			
-			for (TodoItem myitem : l.getList()) {
+			for (TodoItem myitem : l.getList(keyword)) {
 				String a = myitem.toSaveString();
 				saveList.write(a);
 			}
@@ -200,6 +223,9 @@ public class TodoUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
+	
+	
+	
+	
 }

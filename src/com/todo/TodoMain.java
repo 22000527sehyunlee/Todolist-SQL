@@ -1,11 +1,7 @@
 package com.todo;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
-import java.util.StringTokenizer;
-
 import com.todo.dao.TodoList;
 import com.todo.menu.Menu;
 import com.todo.service.TodoUtil;
@@ -63,6 +59,7 @@ public class TodoMain {
 				System.out.println("날짜역순으로 정렬하였습니다.");
 				TodoUtil.listAll(l,"due_date",0);
 				break;
+				
 			case "ls_cate":
 				TodoUtil.listCateAll(l);
 				break;
@@ -76,13 +73,26 @@ public class TodoMain {
 				String cate = sc.nextLine().trim();
 				TodoUtil.findCateList(l,cate);
 				break;
+			
+			case "comp" :
+				int num = sc.nextInt();
+				TodoUtil.completeItem(l, num);
+				break;
+				
+			case "ls_comp":
+				int comp =1;
+				TodoUtil.listAll(l,comp);
+				break;
+				
+			case "ls_import":
+				TodoUtil.listAll(l,"importance",1);
+				break;
 				
 			case "help":
 				Menu.displaymenu();
 				break;
 			
 			case "exit":
-				TodoUtil.saveList(l, "todolist.txt");
 				quit = true;
 				break;
 
